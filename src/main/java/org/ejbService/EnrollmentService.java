@@ -37,4 +37,10 @@ public class EnrollmentService {
                 .setParameter("studentId", studentId)
                 .getResultList();
     }
+
+    public List<enrollment> findByCourse(Long courseId) {
+        return em.createQuery("SELECT e FROM enrollment e WHERE e.courseId = :courseId", enrollment.class)
+                .setParameter("courseId", courseId)
+                .getResultList();
+    }
 }

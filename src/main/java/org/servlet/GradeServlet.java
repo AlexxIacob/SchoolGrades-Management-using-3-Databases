@@ -41,7 +41,6 @@ public class GradeServlet extends HttpServlet {
 
         JsonObject json = Json.createReader(req.getInputStream()).readObject();
 
-        // Validare câmpuri
         if (!json.containsKey("studentId") || !json.containsKey("courseId") || !json.containsKey("grade")) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("{\"error\":\"Missing studentId, courseId or grade\"}");
