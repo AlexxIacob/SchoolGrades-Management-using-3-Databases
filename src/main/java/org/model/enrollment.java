@@ -42,4 +42,11 @@
         public void setCourseId(Long courseId) {
             this.courseId = courseId;
         }
+
+        public enrollment(Long studentId, Long courseId) {
+            this.studentId = studentId;
+            this.courseId = courseId;
+        }
+
+        public enrollment() {}
     }
