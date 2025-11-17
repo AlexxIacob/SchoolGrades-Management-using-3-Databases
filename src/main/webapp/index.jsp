@@ -446,20 +446,20 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>📚 Sistem de Gestionare Academică</h1>
-        <p>Cursuri · Studenți · Note</p>
+        <h1>School Management</h1>
+        <p>Courses · Students · Grades</p>
     </div>
 
     <div class="breadcrumb" id="breadcrumb">
-        <span class="active">Cursuri</span>
+        <span class="active">Courses</span>
     </div>
 
     <div class="content" id="content">
-        <div class="loading">Se încarcă cursurile...</div>
+        <div class="loading">Loading courses</div>
     </div>
 </div>
 
-<!-- Modal pentru formulare -->
+
 <div id="modal" class="modal">
     <div class="modal-content">
         <div class="modal-header" id="modalHeader">Modal</div>
@@ -482,17 +482,17 @@
         let html = '';
 
         if (currentView === 'courses') {
-            html = '<span class="active">Cursuri</span>';
+            html = '<span class="active">Courses</span>';
         } else if (currentView === 'students') {
-            html = '<button onclick="loadCourses()">Cursuri</button> <span>›</span> <span class="active">' + currentCourse.name + '</span>';
+            html = '<button onclick="loadCourses()">Courses</button> <span>›</span> <span class="active">' + currentCourse.name + '</span>';
         } else if (currentView === 'grades') {
-            html = '<button onclick="loadCourses()">Cursuri</button> <span>›</span> <button onclick="loadStudents(' + currentCourse.id + ')">' + currentCourse.name + '</button> <span>›</span> <span class="active">' + currentStudent.name + '</span>';
+            html = '<button onclick="loadCourses()">Courses</button> <span>›</span> <button onclick="loadStudents(' + currentCourse.id + ')">' + currentCourse.name + '</button> <span>›</span> <span class="active">' + currentStudent.name + '</span>';
         }
 
         breadcrumb.innerHTML = html;
     }
 
-    // ==================== COURSES ====================
+
     function loadCourses() {
         currentView = 'courses';
         currentCourse = null;
@@ -500,20 +500,20 @@
         updateBreadcrumb();
 
         const content = document.getElementById('content');
-        content.innerHTML = '<div class="loading">Se încarcă cursurile...</div>';
+        content.innerHTML = '<div class="loading">Loading courses</div>';
 
         fetch(baseUrl + '/courses')
             .then(response => response.json())
             .then(courses => {
                 let html = `
                 <div class="section-header">
-                    <div class="section-title"><span class="icon">📚</span> Toate Cursurile</div>
-                    <button class="btn btn-primary" id="addCourseBtn">➕ Adaugă Curs</button>
+                    <div class="section-title"><span class="icon"></span> All courses</div>
+                    <button class="btn btn-primary" id="addCourseBtn">➕ Add course</button>
                 </div>
             `;
 
                 if (courses.length === 0) {
-                    html += '<div class="no-data"><div class="icon">📚</div><p>Nu există cursuri înregistrate</p></div>';
+                    html += '<div class="no-data"><div class="icon"></div><p>There are no courses</p></div>';
                 } else {
                     html += '<div class="card-grid">';
                     courses.forEach(course => {
@@ -524,8 +524,8 @@
                                 <div class="card-id">ID: ${course.id}</div>
                             </div>
                             <div class="card-actions">
-                                <button class="btn btn-warning btn-sm edit-btn">✏️ Editează</button>
-                                <button class="btn btn-danger btn-sm delete-btn">🗑️ Șterge</button>
+                                <button class="btn btn-warning btn-sm edit-btn">✏️ Edit</button>
+                                <button class="btn btn-danger btn-sm delete-btn">🗑️ Delete</button>
                             </div>
                         </div>
                     `;
@@ -535,7 +535,7 @@
 
                 content.innerHTML = html;
 
-                // Adaugăm event listeners după ce cardurile sunt în DOM
+
                 document.getElementById('addCourseBtn').addEventListener('click', showAddCourseModal);
 
                 const cards = content.querySelectorAll('.card');
@@ -550,33 +550,33 @@
                 });
             })
             .catch(error => {
-                content.innerHTML = '<div class="error">Eroare la încărcarea cursurilor: ' + error.message + '</div>';
+                content.innerHTML = '<div class="error">Erorr ' + error.message + '</div>';
             });
     }
 
 
     function showAddCourseModal() {
-        showModal('➕ Adaugă Curs Nou', `
+        showModal('➕ Add new course', `
                 <div class="form-group">
-                    <label for="courseName">Nume Curs:</label>
-                    <input type="text" id="courseName" placeholder="Ex: Matematică" required>
+                    <label for="courseName">Course name:</label>
+                    <input type="text" id="courseName" placeholder="Ex: Databases" required>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Anulează</button>
-                    <button class="btn btn-success" onclick="addCourse()">Adaugă</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="addCourse()">Add</button>
                 </div>
             `);
     }
 
     function showEditCourseModal(id, name) {
-        showModal('✏️ Editează Curs', `
+        showModal('Edit course', `
                 <div class="form-group">
-                    <label for="courseName">Nume Curs:</label>
+                    <label for="courseName">Course name:</label>
                     <input type="text" id="courseName" value="${name}" required>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Anulează</button>
-                    <button class="btn btn-success" onclick="updateCourse(${id})">Salvează</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="updateCourse(${id})">Save</button>
                 </div>
             `);
     }
@@ -584,7 +584,7 @@
     function addCourse() {
         const name = document.getElementById('courseName').value.trim();
         if (!name) {
-            alert('Introduceți numele cursului!');
+            alert('Add course name');
             return;
         }
 
@@ -596,16 +596,16 @@
             .then(response => response.json())
             .then(data => {
                 closeModal();
-                showSuccess('Curs adăugat cu succes!');
+                showSuccess('Course added succesfully');
                 loadCourses();
             })
-            .catch(error => showError('Eroare la adăugarea cursului: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
     function updateCourse(id) {
         const name = document.getElementById('courseName').value.trim();
         if (!name) {
-            alert('Introduceți numele cursului!');
+            alert('Add course name');
             return;
         }
 
@@ -617,28 +617,29 @@
             .then(response => response.json())
             .then(data => {
                 closeModal();
-                showSuccess('Curs actualizat cu succes!');
+                showSuccess('Course updated succesfully');
                 loadCourses();
             })
-            .catch(error => showError('Eroare la actualizarea cursului: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
     function deleteCourse(id, name) {
-        if (!confirm(`Sigur doriți să ștergeți cursul "${name}"?`)) return;
+        if (!confirm(`Are you sure you want to delete course "${name}"?`)) return;
 
         fetch(baseUrl + '/courses?id=' + id, { method: 'DELETE' })
             .then(response => response.json())
             .then(data => {
-                showSuccess('Curs șters cu succes!');
+                showSuccess('Course succesfully deleted');
                 loadCourses();
             })
-            .catch(error => showError('Eroare la ștergerea cursului: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
-    // ==================== STUDENTS ====================
+
     function loadStudents(courseId) {
         const content = document.getElementById('content');
-        content.innerHTML = '<div class="loading">Se încarcă studenții...</div>';
+        content.innerHTML = '<div class="loading">Loading studens</div>';
+
 
         fetch(baseUrl + '/courses?id=' + courseId)
             .then(response => response.json())
@@ -647,55 +648,78 @@
                 currentView = 'students';
                 updateBreadcrumb();
 
-                return fetch(baseUrl + '/students');
-            })
-            .then(response => response.json())
-            .then(students => {
-                let html = `
-                <div class="section-header">
-                    <div class="section-title"><span class="icon">👥</span> Studenți - ${currentCourse.name}</div>
-                    <button class="btn btn-primary" id="addStudentBtn">➕ Adaugă Student</button>
-                </div>
-            `;
 
-                if (students.length === 0) {
-                    html += '<div class="no-data"><div class="icon">👥</div><p>Nu există studenți înregistrați</p></div>';
-                } else {
-                    html += '<div class="card-grid">';
-                    students.forEach(student => {
-                        html += `
-                        <div class="card">
-                            <div class="card-clickable" style="cursor:pointer;">
-                                <div class="card-title"></div>
-                                <div class="card-subtitle"></div>
-                                <div class="card-id">ID: ${student.id}</div>
+                return fetch(baseUrl + '/enrollments?courseId=' + courseId);
+            })
+            .then(res => res.json())
+            .then(enrollments => {
+
+
+                const studentIds = enrollments.map(e => e.studentId);
+
+
+                return fetch(baseUrl + '/students')
+                    .then(res => res.json())
+                    .then(allStudents => {
+                        const students = allStudents.filter(s => studentIds.includes(s.id));
+
+
+                        let html = `
+                        <div class="section-header">
+                            <div class="section-title">
+                                <span class="icon">👥</span> Students - ${currentCourse.name}
                             </div>
-                            <div class="card-actions">
-                                <button class="btn btn-warning btn-sm edit-btn">✏️ Editează</button>
-                                <button class="btn btn-danger btn-sm delete-btn">🗑️ Șterge</button>
-                            </div>
+                            <button class="btn btn-primary" id="addStudentBtn">➕ Add student</button>
                         </div>
                     `;
+
+                        if (students.length === 0) {
+                            html += `
+                            <div class="no-data">
+                                <div class="icon">👥</div>
+                                <p>No students at this course</p>
+                            </div>
+                        `;
+                        } else {
+                            html += '<div class="card-grid">';
+                            students.forEach(student => {
+                                html += `
+                                <div class="card">
+                                    <div class="card-clickable" style="cursor:pointer;">
+                                        <div class="card-title">${student.name}</div>
+                                        <div class="card-subtitle">📧 ${student.email}</div>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                    </div>
+                                </div>
+                            `;
+                            });
+                            html += '</div>';
+                        }
+
+                        content.innerHTML = html;
+
+
+                        document.getElementById('addStudentBtn')
+                            .addEventListener('click', showAddStudentModal);
+
+
+                        const cards = content.querySelectorAll('.card');
+                        cards.forEach((card, index) => {
+                            const student = students[index];
+
+                            card.querySelector('.card-clickable')
+                                .addEventListener('click', () => loadGrades(student.id));
+
+                            card.querySelector('.edit-btn')
+                                .addEventListener('click', () => showEditStudentModal(student.id, student.name, student.email));
+
+                            card.querySelector('.delete-btn')
+                                .addEventListener('click', () => deleteStudent(student.id, student.name));
+                        });
                     });
-                    html += '</div>';
-                }
-
-                content.innerHTML = html;
-
-                // Add event listener for add student
-                document.getElementById('addStudentBtn').addEventListener('click', showAddStudentModal);
-
-                const cards = content.querySelectorAll('.card');
-                cards.forEach((card, index) => {
-                    const student = students[index];
-
-                    card.querySelector('.card-clickable').querySelector('.card-title').textContent = student.name;
-                    card.querySelector('.card-clickable').querySelector('.card-subtitle').textContent = '📧 ' + student.email;
-                    card.querySelector('.card-clickable').addEventListener('click', () => loadGrades(student.id));
-
-                    card.querySelector('.edit-btn').addEventListener('click', () => showEditStudentModal(student.id, student.name, student.email));
-                    card.querySelector('.delete-btn').addEventListener('click', () => deleteStudent(student.id, student.name));
-                });
             })
             .catch(error => {
                 content.innerHTML = '<div class="error">Eroare: ' + error.message + '</div>';
@@ -703,10 +727,11 @@
     }
 
 
+
     function showAddStudentModal() {
-        showModal('➕ Adaugă Student Nou', `
+        showModal('Add new students', `
                 <div class="form-group">
-                    <label for="studentName">Nume Student:</label>
+                    <label for="studentName">Student name</label>
                     <input type="text" id="studentName" placeholder="Ex: Ion Popescu" required>
                 </div>
                 <div class="form-group">
@@ -714,16 +739,16 @@
                     <input type="email" id="studentEmail" placeholder="Ex: ion.popescu@email.com" required>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Anulează</button>
-                    <button class="btn btn-success" onclick="addStudent()">Adaugă</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="addStudent()">Add</button>
                 </div>
             `);
     }
 
     function showEditStudentModal(id, name, email) {
-        showModal('✏️ Editează Student', `
+        showModal('Edit student', `
                 <div class="form-group">
-                    <label for="studentName">Nume Student:</label>
+                    <label for="studentName">Student name</label>
                     <input type="text" id="studentName" value="${name}" required>
                 </div>
                 <div class="form-group">
@@ -731,8 +756,8 @@
                     <input type="email" id="studentEmail" value="${email}" required>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Anulează</button>
-                    <button class="btn btn-success" onclick="updateStudent(${id})">Salvează</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="updateStudent(${id})">Save</button>
                 </div>
             `);
     }
@@ -742,30 +767,69 @@
         const email = document.getElementById('studentEmail').value.trim();
 
         if (!name || !email) {
-            alert('Completați toate câmpurile!');
+            alert('Comeplte everything');
             return;
         }
+
 
         fetch(baseUrl + '/students', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: name, email: email })
+            body: JSON.stringify({ name, email })
         })
-            .then(response => response.json())
-            .then(data => {
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Error');
+                }
+                return res.json();
+            })
+            .then(created => {
+                if (!created.id) {
+                    alert("Error");
+                    return;
+                }
+
+                const newStudentId = created.id;
+
+
+                return fetch(baseUrl + '/enrollments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        studentId: newStudentId,
+                        courseId: currentCourse.id
+                    })
+                });
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Error');
+                }
+                return res.json();
+            })
+            .then(enr => {
+                if (enr.error) {
+                    alert("Student created but couldnt re assigned to course");
+                    return;
+                }
+
                 closeModal();
-                showSuccess('Student adăugat cu succes!');
+                showSuccess('Student added succesfully');
+
                 loadStudents(currentCourse.id);
             })
-            .catch(error => showError('Eroare la adăugarea studentului: ' + error.message));
+            .catch(err => {
+                alert("Eroare: " + err.message);
+            });
     }
+
 
     function updateStudent(id) {
         const name = document.getElementById('studentName').value.trim();
         const email = document.getElementById('studentEmail').value.trim();
 
         if (!name || !email) {
-            alert('Completați toate câmpurile!');
+            alert('Complete everything');
             return;
         }
 
@@ -777,28 +841,28 @@
             .then(response => response.json())
             .then(data => {
                 closeModal();
-                showSuccess('Student actualizat cu succes!');
+                showSuccess('Student updated succesfully');
                 loadStudents(currentCourse.id);
             })
-            .catch(error => showError('Eroare la actualizarea studentului: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
     function deleteStudent(id, name) {
-        if (!confirm(`Sigur doriți să ștergeți studentul "${name}"?`)) return;
+        if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
 
         fetch(baseUrl + '/students?id=' + id, { method: 'DELETE' })
             .then(response => response.json())
             .then(data => {
-                showSuccess('Student șters cu succes!');
+                showSuccess('Student deleted succesfully');
                 loadStudents(currentCourse.id);
             })
-            .catch(error => showError('Eroare la ștergerea studentului: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
-    // ==================== GRADES ====================
+
     function loadGrades(studentId) {
         const content = document.getElementById('content');
-        content.innerHTML = '<div class="loading">Se încarcă notele...</div>';
+        content.innerHTML = '<div class="loading">Loading grades</div>';
 
         fetch(baseUrl + '/students?id=' + studentId)
             .then(response => response.json())
@@ -815,24 +879,24 @@
 
                 let html = `
                         <div class="section-header">
-                            <div class="section-title"><span class="icon">📊</span> Note - ${escapeHtml(currentStudent.name)}</div>
+                            <div class="section-title"><span class="icon"></span> Grades - ${escapeHtml(currentStudent.name)}</div>
                             <button class="btn btn-primary" onclick="showAddGradeModal()">
-                                ➕ Adaugă Notă
+                                Add grade
                             </button>
                         </div>
                     `;
 
                 if (courseGrades.length === 0) {
-                    html += '<div class="no-data"><div class="icon">📝</div><p>Studentul nu are note la acest curs</p></div>';
+                    html += '<div class="no-data"><div class="icon"></div><p>Studentul doesnt have any grades yet</p></div>';
                 } else {
                     const sum = courseGrades.reduce((acc, g) => acc + g.grade, 0);
                     const average = (sum / courseGrades.length).toFixed(2);
 
                     html += `
                             <div class="average-card">
-                                <h3>Media la ${escapeHtml(currentCourse.name)}</h3>
+                                <h3>Average at ${escapeHtml(currentCourse.name)}</h3>
                                 <div class="average-value">${average}</div>
-                                <p>${courseGrades.length} ${courseGrades.length == 1 ? 'notă' : 'note'}</p>
+                                <p>${courseGrades.length} ${courseGrades.length == 1 ? 'grade' : 'note'}</p>
                             </div>
                             <div class="grades-list">
                         `;
@@ -846,16 +910,16 @@
                         html += `
                                 <div class="grade-item">
                                     <div class="grade-info">
-                                        <strong>Nota ${index + 1}</strong>
+                                        <strong>Grade ${index + 1}</strong>
                                         <div class="card-id">ID: ${grade.id}</div>
                                     </div>
                                     <div class="grade-value ${gradeClass}">${grade.grade.toFixed(2)}</div>
                                     <div class="grade-actions">
                                         <button class="btn btn-warning btn-sm" onclick="showEditGradeModal(${grade.id}, ${grade.grade})">
-                                            ✏️ Editează
+                                            Edit
                                         </button>
                                         <button class="btn btn-danger btn-sm" onclick="deleteGrade(${grade.id})">
-                                            🗑️ Șterge
+                                            Delete
                                         </button>
                                     </div>
                                 </div>
@@ -868,32 +932,32 @@
                 content.innerHTML = html;
             })
             .catch(error => {
-                content.innerHTML = '<div class="error">Eroare: ' + error.message + '</div>';
+                content.innerHTML = '<div class="error">Error ' + error.message + '</div>';
             });
     }
 
     function showAddGradeModal() {
-        showModal('➕ Adaugă Notă Nouă', `
+        showModal('➕ Add new grade', `
                 <div class="form-group">
-                    <label for="gradeValue">Notă (1-10):</label>
-                    <input type="number" id="gradeValue" min="1" max="10" step="0.01" placeholder="Ex: 9.50" required>
+                    <label for="gradeValue">Grade (1-10):</label>
+                    <input type="number" id="gradeValue" min="1" max="10" step="0.01" placeholder="Ex: 9" required>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Anulează</button>
-                    <button class="btn btn-success" onclick="addGrade()">Adaugă</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="addGrade()">Add</button>
                 </div>
             `);
     }
 
     function showEditGradeModal(id, gradeValue) {
-        showModal('✏️ Editează Notă', `
+        showModal('Edit grade', `
                 <div class="form-group">
-                    <label for="gradeValue">Notă (1-10):</label>
+                    <label for="gradeValue">Grade (1-10):</label>
                     <input type="number" id="gradeValue" min="1" max="10" step="0.01" value="${gradeValue}" required>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Anulează</button>
-                    <button class="btn btn-success" onclick="updateGrade(${id})">Salvează</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-success" onclick="updateGrade(${id})">Save</button>
                 </div>
             `);
     }
@@ -902,7 +966,7 @@
         const gradeValue = parseFloat(document.getElementById('gradeValue').value);
 
         if (isNaN(gradeValue) || gradeValue < 1 || gradeValue > 10) {
-            alert('Introduceți o notă validă între 1 și 10!');
+            alert('Grades must be between 1 and 10');
             return;
         }
 
@@ -918,17 +982,17 @@
             .then(response => response.json())
             .then(data => {
                 closeModal();
-                showSuccess('Notă adăugată cu succes!');
+                showSuccess('Grade added succesfully');
                 loadGrades(currentStudent.id);
             })
-            .catch(error => showError('Eroare la adăugarea notei: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
     function updateGrade(id) {
         const gradeValue = parseFloat(document.getElementById('gradeValue').value);
 
         if (isNaN(gradeValue) || gradeValue < 1 || gradeValue > 10) {
-            alert('Introduceți o notă validă între 1 și 10!');
+            alert('Grades must be between 1 and 10');
             return;
         }
 
@@ -940,25 +1004,25 @@
             .then(response => response.json())
             .then(data => {
                 closeModal();
-                showSuccess('Notă actualizată cu succes!');
+                showSuccess('Grade updated succesfully');
                 loadGrades(currentStudent.id);
             })
-            .catch(error => showError('Eroare la actualizarea notei: ' + error.message));
+            .catch(error => showError('Error ' + error.message));
     }
 
     function deleteGrade(id) {
-        if (!confirm('Sigur doriți să ștergeți această notă?')) return;
+        if (!confirm('Are you sure you want to delete this grade ?')) return;
 
         fetch(baseUrl + '/grades?id=' + id, { method: 'DELETE' })
             .then(response => response.json())
             .then(data => {
-                showSuccess('Notă ștearsă cu succes!');
+                showSuccess('Grade deleted succesfully');
                 loadGrades(currentStudent.id);
             })
-            .catch(error => showError('Eroare la ștergerea notei: ' + error.message));
+            .catch(error => showError('Error: ' + error.message));
     }
 
-    // ==================== MODAL ====================
+
     function showModal(title, body) {
         document.getElementById('modalHeader').innerHTML = title;
         document.getElementById('modalBody').innerHTML = body;
@@ -969,7 +1033,7 @@
         document.getElementById('modal').classList.remove('active');
     }
 
-    // Închide modalul când se dă click în afara lui
+
     window.onclick = function(event) {
         const modal = document.getElementById('modal');
         if (event.target === modal) {
@@ -977,7 +1041,7 @@
         }
     }
 
-    // ==================== UTILITIES ====================
+
     function showSuccess(message) {
         const content = document.getElementById('content');
         const successDiv = document.createElement('div');
